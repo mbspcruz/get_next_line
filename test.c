@@ -1,40 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   test.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mda-cruz <mda-cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/31 19:34:08 by mda-cruz          #+#    #+#             */
-/*   Updated: 2021/04/20 18:11:10 by mda-cruz         ###   ########.fr       */
+/*   Created: 2021/04/20 15:47:11 by mda-cruz          #+#    #+#             */
+/*   Updated: 2021/04/20 17:28:24 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	get_next_line(int fd, char **line)
+char	*test(char *str)
 {
-	static int *saved;
-	int rd;
+	static char *save;
 	char *buf;
-
-	if(!(buf = (char *)malloc(sizeof(char) * (BUF_SIZE + 1))))
+	size_t len;
+	size_t res;
+	
+	len = ft_strlen(save) + ft_strlen(str);
+	if(!(buf = (char *)malloc(sizeof(char) * (len + 1))))
 		return 0;
+	res = ft_strlcpy(buf, save, len + 1);
+	ft_strlcpy(buf + res, str, len + 1);
+	free(save);
+	save = buf;
+	return (save);
 }
 
-int	main()
+int main(void)
 {
-	int fd;
-	int res;
-	char buf[BUF_SIZE + 1];
-	
-
-	fd = open("txt.txt", O_RDONLY);
-	ft_putnbr(fd);
-	ft_putchar('\n');
-	res = read(fd, buf, BUF_SIZE);
-	ft_putstr(buf);
-	ft_putchar('\n');
-	ft_putnbr(res);
-	return (0);
+	printf("%s\n", test("Olá"));
+	printf("%s\n", test("esta tudo"));
+	printf("%s\n", test("bem "));
+	printf("%s\n", test("contigo?"));
+	return 0;
 }
