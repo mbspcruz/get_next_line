@@ -6,7 +6,7 @@
 /*   By: mda-cruz <mda-cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 19:34:08 by mda-cruz          #+#    #+#             */
-/*   Updated: 2021/04/20 18:11:10 by mda-cruz         ###   ########.fr       */
+/*   Updated: 2021/04/27 00:51:55 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,23 @@
 
 int	get_next_line(int fd, char **line)
 {
-	static int *saved;
+	static char *saved ;
 	int rd;
 	char *buf;
 
 	if(!(buf = (char *)malloc(sizeof(char) * (BUF_SIZE + 1))))
 		return 0;
-}
+	while((rd = read(fd, buf, BUF_SIZE)) > 0)
+	{
+		if(saved[fd] == '\n')
+		{
+			saved = buf;
 
-int	main()
-{
-	int fd;
-	int res;
-	char buf[BUF_SIZE + 1];
-	
-
-	fd = open("txt.txt", O_RDONLY);
-	ft_putnbr(fd);
-	ft_putchar('\n');
-	res = read(fd, buf, BUF_SIZE);
-	ft_putstr(buf);
-	ft_putchar('\n');
-	ft_putnbr(res);
-	return (0);
+		}
+		
+		ft_strjoin(&saved[fd], buf);
+		
+		
+	}
+	return (saved[fd]);
 }

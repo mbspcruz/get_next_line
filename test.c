@@ -16,14 +16,12 @@ char	*test(char *str)
 {
 	static char *save;
 	char *buf;
-	size_t len;
 	size_t res;
-	
-	len = ft_strlen(save) + ft_strlen(str);
-	if(!(buf = (char *)malloc(sizeof(char) * (len + 1))))
+
+	if(!(buf = (char *)malloc(sizeof(char) * (BUF_SIZE + 1))))
 		return 0;
-	res = ft_strlcpy(buf, save, len + 1);
-	ft_strlcpy(buf + res, str, len + 1);
+	res = ft_strlcpy(buf, save, BUF_SIZE + 1);
+	ft_strlcpy(buf + res, str, BUF_SIZE + 1);
 	free(save);
 	save = buf;
 	return (save);
@@ -31,7 +29,7 @@ char	*test(char *str)
 
 int main(void)
 {
-	printf("%s\n", test("Olá"));
+	printf("%s\n", test("Olá "));
 	printf("%s\n", test("esta tudo"));
 	printf("%s\n", test("bem "));
 	printf("%s\n", test("contigo?"));
