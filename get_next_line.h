@@ -6,7 +6,7 @@
 /*   By: mda-cruz <mda-cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 19:34:20 by mda-cruz          #+#    #+#             */
-/*   Updated: 2021/04/27 00:42:23 by mda-cruz         ###   ########.fr       */
+/*   Updated: 2021/04/28 18:25:20 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,6 @@ void	ft_putstr(char *c);
 size_t	ft_strlen(const char *str);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strdup(char *s);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
 #endif

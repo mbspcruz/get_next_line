@@ -6,7 +6,7 @@
 /*   By: mda-cruz <mda-cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 19:34:08 by mda-cruz          #+#    #+#             */
-/*   Updated: 2021/04/27 16:18:14 by mda-cruz         ###   ########.fr       */
+/*   Updated: 2021/04/28 18:48:36 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,26 @@ int	ft_is_line(char **str, char **line)
 	char *tmp;
 
 	i = 0;
-	while(*str[i] != '\n')
+	/* run until find \n */
+	while(*str[i] != '\n' && *str[i])
 		i++;
-	if(*str[i] == '\n' || *str[i] == '\0')
+	/* save the str to the line and store the rest of the data after the newline in the tmp var
+	** if the line didnt have a break duplicate 
+	*/
+	if(*str[i] == '\n')
 	{
-		
+		*line = ft_substr(*str, 0, i);
+		tmp = ft_strdup(*str + i + 1);
+		free(*str);
+		*str = tmp;
 	}
+	else if (*str == '\0')
+	{
+		*line = ft_strdup(*str);
+		free(*str);
+		str = 0;
+	}
+	return (1);
 }
 
 int	get_next_line(int fd, char **line)
@@ -33,10 +47,26 @@ int	get_next_line(int fd, char **line)
 	char *buf;
 
 	if(!(buf = (char *)malloc(sizeof(char) * (BUF_SIZE + 1))))
-		return 0;
+		return (-1);
 	while((rd = read(fd, buf, BUF_SIZE)) > 0)
 	{
 		
 	}
-	return (saved[fd]);
+}
+
+int	main()
+{
+	int fd;
+	int res;
+	char buf[BUF_SIZE + 1];
+	
+
+	fd = open("txt.txt", O_RDONLY);
+	ft_putnbr(fd);
+	ft_putchar('\n');
+	res = read(fd, buf, BUF_SIZE);
+	ft_putstr(buf);
+	ft_putchar('\n');
+	ft_putnbr(res);
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mda-cruz <mda-cruz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 19:34:12 by mda-cruz          #+#    #+#             */
-/*   Updated: 2021/04/27 00:42:04 by mda-cruz         ###   ########.fr       */
+/*   Updated: 2021/04/28 18:25:08 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,5 +102,46 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ptr[i] = '\0';
 	return (ptr);
 }
+
+char	*ft_strdup(char *s)
+{
+	char	*ptr;
+	int		i;
+
+	ptr = (char *)malloc(sizeof(char) * ft_strlen(s) + 1);
+	i = 0;
+	if (!ptr)
+		return (0);
+	while (s[i] != '\0')
+	{
+		ptr[i] = s[i];
+		i++;
+	}
+	ptr[i] = '\0';
+	return (ptr);
+}
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	char			*ptr;
+	unsigned int	i;
+	unsigned int	j;
+
+	if (!s)
+		return (0);
+	i = 0;
+	j = 0;
+	ptr = (char *)malloc(sizeof(*s) * (len + 1));
+	if (!ptr)
+		return (0);
+	while (s[i])
+	{
+		if (i >= start && j < len)
+			ptr[j++] = s[i];
+		i++;
+	}
+	ptr[j] = '\0';
+	return (ptr);
+}
+
 
 
