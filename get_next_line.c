@@ -31,7 +31,7 @@ int	ft_fill_line(char **str, char **line)
 		free(*str);
 		*str = tmp;
 	}
-	else if (*str == '\0')
+	else if (*str == 0)
 	{
 		*line = ft_strdup(*str);
 		free(*str);
@@ -42,16 +42,32 @@ int	ft_fill_line(char **str, char **line)
 
 int	get_next_line(int fd, char **line)
 {
-	static char *saved ;
+	static char *saved[OP_MX] ;
 	int rd;
 	char *buf;
+	int res;
 
-	if(!(buf = (char *)malloc(sizeof(char) * (BUF_SIZE + 1))))
+	if(!(buf = (char *)malloc(sizeof(char) * (BUF_SIZE + 1))) || BUF_SIZE < 0)
 		return (-1);
+	/*
+	**check the end of the buffer and if the static variable is empty, if it is then duplicate the str to the static variable. 
+	**if not join the saved with the new str. if new line break!
+	*/
 	while((rd = read(fd, buf, BUF_SIZE)) > 0)
 	{
-		
+		buf[rd] = '\0';
+		if(saved[fd] == 0)
+			ft_strdup(buf);
+		else 
+		{
+			ft_strjoin(saved[fd], buf);
+			free(saved[fd]);
+			saved[fd] = buf;
+		}
+		if(ft_strchr(saved[fd], '\n'))
+			break;
 	}
+	return (ft_fill_line(saved, line));
 }
 
 /*int	main()

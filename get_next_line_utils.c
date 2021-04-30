@@ -143,5 +143,20 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	return (ptr);
 }
 
+char	*ft_strchr(const char *s, int c)
+{
+	int i;
+
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == c)
+			return ((char *)s + i);
+		i++;
+	}
+	if (s[i] != c && s[i] == '\0')
+		return (0);
+	return (0);
+}
 
 
