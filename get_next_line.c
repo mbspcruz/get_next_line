@@ -6,7 +6,7 @@
 /*   By: mda-cruz <user@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 16:05:21 by david             #+#    #+#             */
-/*   Updated: 2021/05/04 16:15:01 by mda-cruz         ###   ########.fr       */
+/*   Updated: 2021/05/10 19:58:08 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,44 +19,37 @@
 ** It's important to check if the buf is empty, to check if its has 0
 ** memory allocated except the last buf. Steps, check the presence of '\n'
 */
-char    *ft_line_bf_n(char *str)
+char    *ft_line_bf_n(char *line)
 {
     int i;
-    char *line;
+    char *tmp;
 
     i = 0;
-    if(!(line = malloc(sizeof(char) * i + 1)))
+    if(!(tmp = malloc(sizeof(char) * i + 1)))
         return (0);
-    while(str[i] != '\n' && str[i])
+    while(line[i] != '\n' && line[i])
     {
-        line[i] = str[i];
+        tmp[i] = line[i];
         i++;
     }
-    return(line);
+    return(tmp);
 }
 
-char    *ft_line_af_n(char *str)
+char    *ft_line_af_n(char *line)
 {
     int i;
     char *sv;
 	int b;
-
-    i = 0;
-    b = 0;
-	sv = malloc(sizeof(char) * (ft_strlen(str) - i) + 1);
-        return (0);
     
-    while(str[i] && str[i] != '\n')
+    i = 0;
+    while(line[i] && line[i] != '\n')
         i++;
-    if(!str[i])
-    {
-        free(str);
+    if (!(sv = malloc(sizeof(char) * (ft_strlen(line) - i) + 1)))
         return (0);
-    }
-    while(str[i])
+    while(line[i])
     {
         i++;
-        sv[b] = str[i];
+        sv[b] = line[i];
         b++;
     }
     return (sv);
@@ -67,9 +60,10 @@ int get_next_line(int fd, char **line)
     static char *save[OP_MX];
     int rd;
     char *buf;
- \
-    if(!(buf = malloc(sizeof(char) * BUF_SIZE +1)) || BUF_SIZE <= 0 || fd < 0 || line == 0)
+    
+    /*if(!(buf = malloc(sizeof(char) * BUF_SIZE +1)) || BUF_SIZE <= 0 || fd < 0 || line == 0)
         return (-1);
+    */
     while((rd = read(fd, buf, BUF_SIZE) > 0) && save[fd] != '\n')
     {
         buf[rd] = '\0';
@@ -78,15 +72,20 @@ int get_next_line(int fd, char **line)
     free(buf);
     *line = ft_line_bf_n(save[fd]);
     save[fd] = ft_line_af_n(save[fd]);
+
     return (1);
 }
+
 /*int main()
 {
     char ola[]="Ola esta tudo supe \n bem?";
-    printf("%s", ft_line_af_n(ola));
+    char ola2[]="Ola esta tudo supe \n bem?";
+    printf("%s \n", ft_line_bf_n(ola));
+    
+    printf("%s", ft_line_af_n(ola2));
     return (0);
-}*/
 
+ }*/
 int main(int argc, char **argv)
 {
 	int fd, ret, line_count;
