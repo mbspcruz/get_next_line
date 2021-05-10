@@ -3,95 +3,95 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mda-cruz <mda-cruz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mda-cruz <user@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/03/31 19:34:08 by mda-cruz          #+#    #+#             */
-/*   Updated: 2021/04/28 19:54:46 by mda-cruz         ###   ########.fr       */
+/*   Created: 2021/04/29 16:05:21 by david             #+#    #+#             */
+/*   Updated: 2021/05/04 16:15:01 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_fill_line(char **str, char **line)
+/* 
+** get_next_line is a function that will store in the paramenter "line" 
+** a line that has been read from the fd, this is a sucession of 0 to n
+** character that end with '\n', while line should not have stored the '\n'
+** It's important to check if the buf is empty, to check if its has 0
+** memory allocated except the last buf. Steps, check the presence of '\n'
+*/
+char    *ft_line_bf_n(char *str)
 {
-	int i;
-	char *tmp;
+    int i;
+    char *line;
 
-	i = 0;
-	/* run until find \n */
-	while(*str[i] != '\n' && *str[i])
-		i++;
-	/* save the str to the line and store the rest of the data after the newline in the tmp var
-	** if the line didnt have a break duplicate 
-	*/
-	if(*str[i] == '\n')
-	{
-		*line = ft_substr(*str, 0, i);
-		tmp = ft_strdup(*str + i + 1);
-		free(*str);
-		*str = tmp;
-	}
-	else if (*str == 0)
-	{
-		*line = ft_strdup(*str);
-		free(*str);
-		str = 0;
-	}
-	return (1);
+    i = 0;
+    if(!(line = malloc(sizeof(char) * i + 1)))
+        return (0);
+    while(str[i] != '\n' && str[i])
+    {
+        line[i] = str[i];
+        i++;
+    }
+    return(line);
 }
 
-int	get_next_line(int fd, char **line)
+char    *ft_line_af_n(char *str)
 {
-	static char *saved[OP_MX] ;
-	int rd;
-	char *buf;
-	int res;
+    int i;
+    char *sv;
+	int b;
 
-	if(!(buf = (char *)malloc(sizeof(char) * (BUF_SIZE + 1))) || BUF_SIZE < 0)
-		return (-1);
-	/*
-	**check the end of the buffer and if the static variable is empty, if it is then duplicate the str to the static variable. 
-	**if not join the saved with the new str. if new line break!
-	*/
-	while((rd = read(fd, buf, BUF_SIZE)) > 0)
-	{
-		buf[rd] = '\0';
-		if(saved[fd] == 0)
-			ft_strdup(buf);
-		else 
-		{
-			ft_strjoin(saved[fd], buf);
-			free(saved[fd]);
-			saved[fd] = buf;
-		}
-		if(ft_strchr(saved[fd], '\n'))
-			break;
-	}
-	return (ft_fill_line(saved, line));
+    i = 0;
+    b = 0;
+	sv = malloc(sizeof(char) * (ft_strlen(str) - i) + 1);
+        return (0);
+    
+    while(str[i] && str[i] != '\n')
+        i++;
+    if(!str[i])
+    {
+        free(str);
+        return (0);
+    }
+    while(str[i])
+    {
+        i++;
+        sv[b] = str[i];
+        b++;
+    }
+    return (sv);
 }
 
-/*int	main()
+int get_next_line(int fd, char **line)
 {
-	int fd;
-	int res;
-	char buf[BUF_SIZE + 1];
-	
-
-	fd = open("txt.txt", O_RDONLY);
-	ft_putnbr(fd);
-	ft_putchar('\n');
-	res = read(fd, buf, BUF_SIZE);
-	ft_putstr(buf);
-	ft_putchar('\n');
-	ft_putnbr(res);
-	return (0);
+    static char *save[OP_MX];
+    int rd;
+    char *buf;
+ \
+    if(!(buf = malloc(sizeof(char) * BUF_SIZE +1)) || BUF_SIZE <= 0 || fd < 0 || line == 0)
+        return (-1);
+    while((rd = read(fd, buf, BUF_SIZE) > 0) && save[fd] != '\n')
+    {
+        buf[rd] = '\0';
+        save[fd] = ft_strjoin(save[fd], buf);
+    }
+    free(buf);
+    *line = ft_line_bf_n(save[fd]);
+    save[fd] = ft_line_af_n(save[fd]);
+    return (1);
+}
+/*int main()
+{
+    char ola[]="Ola esta tudo supe \n bem?";
+    printf("%s", ft_line_af_n(ola));
+    return (0);
 }*/
 
 int main(int argc, char **argv)
 {
 	int fd, ret, line_count;
 	char *line;
-	
+
 	line_count = 1;
 	ret = 0;
 	line = NULL;
