@@ -6,7 +6,7 @@
 /*   By: mda-cruz <user@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 16:05:21 by david             #+#    #+#             */
-/*   Updated: 2021/05/10 19:58:08 by mda-cruz         ###   ########.fr       */
+/*   Updated: 2021/05/13 16:30:31 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,16 @@ char    *ft_line_bf_n(char *line)
     char *tmp;
 
     i = 0;
-    if(!(tmp = malloc(sizeof(char) * i + 1)))
+    while(line && line[i] && line[i] != '\n')
+        i++;
+    if(!(tmp = (char *)malloc(sizeof(char) * (i + 1))))
         return (0);
-    while(line[i] != '\n' && line[i])
+    while(line && line[i] != '\n' && line[i])
     {
         tmp[i] = line[i];
         i++;
     }
+    tmp[i] = '\0';
     return(tmp);
 }
 
@@ -42,9 +45,10 @@ char    *ft_line_af_n(char *line)
 	int b;
     
     i = 0;
+    b = 0;
     while(line[i] && line[i] != '\n')
         i++;
-    if (!(sv = malloc(sizeof(char) * (ft_strlen(line) - i) + 1)))
+    if (!(sv = (char *)malloc(sizeof(char) * (ft_strlen(line) - i + 1))))
         return (0);
     while(line[i])
     {
@@ -52,7 +56,26 @@ char    *ft_line_af_n(char *line)
         sv[b] = line[i];
         b++;
     }
+    sv[b] = '\0';
     return (sv);
+}
+
+int ft_check_nl(char *line)
+{
+    int i;
+
+    i = 0;
+    //printf("*line: %s", line);
+    // printf("line[i]: %c", line[i]);
+    while (line && line[i])
+    {
+        if (line[i] == '\n')
+        {
+            return(1);
+        }
+        i++;
+    }
+    return (0);
 }
 
 int get_next_line(int fd, char **line)
@@ -61,19 +84,24 @@ int get_next_line(int fd, char **line)
     int rd;
     char *buf;
     
-    /*if(!(buf = malloc(sizeof(char) * BUF_SIZE +1)) || BUF_SIZE <= 0 || fd < 0 || line == 0)
+    
+    if(!(buf = (char *)malloc(sizeof(char) * BUF_SIZE +1)) || BUF_SIZE <= 0 || fd < 0 || line == 0)
         return (-1);
-    */
-    while((rd = read(fd, buf, BUF_SIZE) > 0) && save[fd] != '\n')
+    
+    while((rd = read(fd, buf, BUF_SIZE)) > 0)
     {
         buf[rd] = '\0';
         save[fd] = ft_strjoin(save[fd], buf);
+        if (ft_strchr(save[fd], '\n'))
+            break; 
     }
     free(buf);
     *line = ft_line_bf_n(save[fd]);
     save[fd] = ft_line_af_n(save[fd]);
-
-    return (1);
+    if (rd == 0)
+        return (0);
+    else
+        return (1);
 }
 
 /*int main()
@@ -84,9 +112,8 @@ int get_next_line(int fd, char **line)
     
     printf("%s", ft_line_af_n(ola2));
     return (0);
-
- }*/
-int main(int argc, char **argv)
+ } */
+/*int main(int argc, char **argv)
 {
 	int fd, ret, line_count;
 	char *line;
@@ -103,6 +130,7 @@ int main(int argc, char **argv)
 			line_count++;
 			free(line);
 		}
+        ret = get_next_line(fd, &line);
 		printf(" \n [ Return: %d ] A line has been read #%d: %s\n", ret, line_count++, line);
 		printf("\n");
 		if (ret == -1)
@@ -115,3 +143,4 @@ int main(int argc, char **argv)
 		close(fd);
 	}
 }
+*/
