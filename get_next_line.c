@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mda-cruz <mda-cruz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mda-cruz <user@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 16:05:21 by david             #+#    #+#             */
-/*   Updated: 2021/05/14 14:26:09 by mda-cruz         ###   ########.fr       */
+/*   Updated: 2021/05/17 10:55:44 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** It's important to check if the buf is empty, to check if its has 0
 ** memory allocated except the last buf. Steps, check the presence of '\n'
 */
-char    *ft_line_bf_n(char *line)
+char    *ft_line_before_n(char *line)
 {
     int i;
     char *tmp;
@@ -41,7 +41,7 @@ char    *ft_line_bf_n(char *line)
     return(tmp);
 }
 
-char    *ft_line_af_n(char *line)
+char    *ft_line_after_n(char *line)
 {
     int i;
     char *sv;
@@ -87,47 +87,41 @@ int get_next_line(int fd, char **line)
 {
     static char *save[OP_MX];
     int rd;
-    char *buf;
+    char buf[BUF_SIZE + 1];
     
-    buf = (char *)malloc(sizeof(char) * BUF_SIZE + 1);
-    while((rd = read(fd, buf, BUF_SIZE)) > 0)
+    rd = 1;
+    while(!ft_strchr(save[fd], '\n') && rd)
     {
+        if((rd = read(fd, buf, BUF_SIZE)) == -1)
+            return (-1);
         buf[rd] = '\0';
         save[fd] = ft_strjoin(save[fd], buf);
-        if (ft_strchr(buf, '\n'))
-            break;
     }
-    free(buf);
-    *line = ft_line_bf_n(save[fd]);
-    save[fd] = ft_line_af_n(save[fd]);
+    *line = ft_line_before_n(save[fd]);
+    save[fd] = ft_line_after_n(save[fd]);
 
-    if (!*line || rd < 0)
-        return (-1);
-    else if (rd == 0)
-        return (0);
-    else
-        return (1);
+    return (rd > 0);
 }
 
-// int main(void)
-// {
-// 	char *line;
-// 	int fd;
-// 	int fd2;
-// 	int	counter;
+ int main(void)
+ {
+ 	char *line;
+ 	int fd;
+ 	int fd2;
+ 	int	counter;
 
-// 	fd = open("txt.txt", O_RDONLY);
-// 	fd2 = open("txt2.txt", O_RDONLY);
-// 	while(get_next_line(fd, &line))
-// 	{
-// 		printf("%s\n\n", line);
-// 	}
-// 	while(get_next_line(fd2, &line))
-// 	{
-// 		printf("%s\n\n", line);
-// 	}
+ 	fd = open("txt.txt", O_RDONLY);
+ 	fd2 = open("txt2.txt", O_RDONLY);
+ 	while(get_next_line(fd, &line))
+ 	{
+ 		printf("%s\n\n", line);
+ 	}
+ 	while(get_next_line(fd2, &line))
+ 	{
+ 		printf("%s\n\n", line);
+ 	}
 		
-// }
+ }
 
 /*int main()
 {
