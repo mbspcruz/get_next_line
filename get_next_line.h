@@ -6,13 +6,13 @@
 /*   By: mda-cruz <user@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 19:34:20 by mda-cruz          #+#    #+#             */
-/*   Updated: 2021/05/13 16:13:11 by mda-cruz         ###   ########.fr       */
+/*   Updated: 2021/05/17 10:10:01 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUF_SIZE 1
+# define BUF_SIZE 10
 # define OP_MX 4096
 
 # include <sys/stat.h>
@@ -27,5 +27,5 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
-int get_next_line(int fd, char **line);
+int		get_next_line(int fd, char **line);
 #endif
