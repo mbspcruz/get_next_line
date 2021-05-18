@@ -6,7 +6,7 @@
 /*   By: mda-cruz <user@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 16:05:21 by david             #+#    #+#             */
-/*   Updated: 2021/05/17 10:55:44 by mda-cruz         ###   ########.fr       */
+/*   Updated: 2021/05/17 15:31:10 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,8 @@ int get_next_line(int fd, char **line)
     char buf[BUF_SIZE + 1];
     
     rd = 1;
+    if(save[fd] == 0)
+	 	save[fd] = ft_strdup("");
     while(!ft_strchr(save[fd], '\n') && rd)
     {
         if((rd = read(fd, buf, BUF_SIZE)) == -1)
@@ -99,11 +101,13 @@ int get_next_line(int fd, char **line)
     }
     *line = ft_line_before_n(save[fd]);
     save[fd] = ft_line_after_n(save[fd]);
-
-    return (rd > 0);
+    if (rd > 0)
+        return (1);
+    else
+        return (0);
 }
 
- int main(void)
+ /*int main(void)
  {
  	char *line;
  	int fd;
@@ -111,18 +115,18 @@ int get_next_line(int fd, char **line)
  	int	counter;
 
  	fd = open("txt.txt", O_RDONLY);
- 	fd2 = open("txt2.txt", O_RDONLY);
+ 	//fd2 = open("txt2.txt", O_RDONLY);
  	while(get_next_line(fd, &line))
  	{
  		printf("%s\n\n", line);
  	}
- 	while(get_next_line(fd2, &line))
- 	{
- 		printf("%s\n\n", line);
- 	}
+ 	//while(get_next_line(fd2, &line))
+ 	//{1
+ 	printf("%s\n\n", line);
+ 	//}
 		
  }
-
+*/
 /*int main()
 {
     char ola[]="Ola esta tudo supe \n bem?";
