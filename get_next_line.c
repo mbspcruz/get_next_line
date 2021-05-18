@@ -6,7 +6,7 @@
 /*   By: mda-cruz <user@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/29 16:05:21 by david             #+#    #+#             */
-/*   Updated: 2021/05/17 15:31:10 by mda-cruz         ###   ########.fr       */
+/*   Updated: 2021/05/18 17:26:30 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char    *ft_line_before_n(char *line)
     while(line && line[i] && line[i] != '\n')
         i++;
     if(!(tmp = (char *)malloc(sizeof(char) * (i + 1))))
-        return (0);
+		return (0);
     i = 0;
     while(line && line[i] && line[i] != '\n')
     {
@@ -52,7 +52,14 @@ char    *ft_line_after_n(char *line)
     i = 0;
     b = 0;
     while(line[i] && line[i] != '\n')
-        i++;
+	{
+		i++;
+	}
+	if(!line[i])
+	{
+		free(line);
+		return (0);
+	}
     if (!(sv = (char *)malloc(sizeof(char) * (ft_strlen(line) - i + 1))))
         return (0);
     while(line[i])
@@ -62,6 +69,7 @@ char    *ft_line_after_n(char *line)
         b++;
     }
     sv[b] = '\0';
+	free(line);
     return (sv);
 }
 
@@ -88,7 +96,11 @@ int get_next_line(int fd, char **line)
     static char *save[OP_MX];
     int rd;
     char buf[BUF_SIZE + 1];
-    
+	char	*tmp;
+
+	if (!line || BUF_SIZE < 1 || read(fd, 0, 0) == -1)
+		return (-1);
+
     rd = 1;
     if(save[fd] == 0)
 	 	save[fd] = ft_strdup("");
@@ -97,9 +109,11 @@ int get_next_line(int fd, char **line)
         if((rd = read(fd, buf, BUF_SIZE)) == -1)
             return (-1);
         buf[rd] = '\0';
-        save[fd] = ft_strjoin(save[fd], buf);
+        tmp = ft_strjoin(save[fd], buf);
+		free(save[fd]);
+		save[fd] = tmp;
     }
-    *line = ft_line_before_n(save[fd]);
+	*line = ft_line_before_n(save[fd]);
     save[fd] = ft_line_after_n(save[fd]);
     if (rd > 0)
         return (1);
@@ -114,19 +128,18 @@ int get_next_line(int fd, char **line)
  	int fd2;
  	int	counter;
 
- 	fd = open("txt.txt", O_RDONLY);
- 	//fd2 = open("txt2.txt", O_RDONLY);
+ 	fd = open("error.txt", O_RDONLY);
+ 	// fd2 = open("txt2.txt", O_RDONLY);
  	while(get_next_line(fd, &line))
  	{
  		printf("%s\n\n", line);
- 	}
+ 	// }
  	//while(get_next_line(fd2, &line))
- 	//{1
- 	printf("%s\n\n", line);
+ 	// {
  	//}
 		
- }
-*/
+ }*/
+
 /*int main()
 {
     char ola[]="Ola esta tudo supe \n bem?";

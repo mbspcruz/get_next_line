@@ -6,13 +6,13 @@
 /*   By: mda-cruz <user@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 19:34:20 by mda-cruz          #+#    #+#             */
-/*   Updated: 2021/05/17 14:17:59 by mda-cruz         ###   ########.fr       */
+/*   Updated: 2021/05/18 16:55:50 by mda-cruz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUF_SIZE 10
+# define BUF_SIZE 42
 # define OP_MX 4096
 
 # include <sys/stat.h>
